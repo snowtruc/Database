@@ -11,9 +11,10 @@ public class HW3_Problem2_Group40 {
 		
 		// Connect to database
 	
-		final String hostName = "pham0027-sql-server.database.windows.net"; final String dbName = "cs-dsa-4513-sql-db";
-		final String user = "pham0027";
-		final String password = "Tiffy!297";
+		final String hostName = "henn0020-sql-server.database.windows.net";
+	    final String dbName = "cs-dsa-4513-sql-db";
+	    final String user = "henn0020";
+	    final String password = "~^1@9pxk4*29s|\\a1k22";
 		final String url = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;encrypt=true;host NameInCertificate=*.database.windows.net;loginTimeout=30;",
 				hostName, dbName, user, password);
 
