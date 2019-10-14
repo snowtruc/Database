@@ -22,19 +22,32 @@ public class HW3_Problem2_Group40 {
 			if(option == 1) {
 				//get input from user for pname and age of a new performer
 				String description = "Input the values for a new performer...";
-				String[] param_names = {"pname", "age"};
+				String[] param_names = {"Name", "Age"};
 				String[] params = getStringInputs(description, param_names); 
 				String[] param_types = {"string", "int"};
 				String spname = "sp_q1";
+				//pid not taken since auto generated.
 				try {
-					final ResultSet resultSet = DB.executeSPQuery(spname, params, param_types);
+					final int result = DB.executeSPQuery(spname, params, param_types);
 
 				} finally {
 					
 				}
 			}
 			else if(option == 2) {
-			
+				//get input from user for pname and age of a new performer
+				String description = "Input the values for a new performer...";
+				String[] param_names = {"Name", "Age", "Director ID"};
+				String[] params = getStringInputs(description, param_names); 
+				String[] param_types = {"string", "int", "int"};
+				String spname = "sp_q2";
+				//pid not taken since auto generated.
+				try {
+					final int result = DB.executeSPQuery(spname, params, param_types);
+
+				} finally {
+					
+				}
 			}
 			else if(option == 3) {
 				// Display the complete information of all performers
@@ -60,8 +73,8 @@ public class HW3_Problem2_Group40 {
 	
 	private static int getNextOption() {
 		
-		System.out.println("Option 1: ");
-		System.out.println("Option 2: ");
+		System.out.println("Option 1: Insert new performer based on average experience of other performers within close age.");
+		System.out.println("Option 2: Insert new performer based on average experience of other performers who acted in movie directed by given director.");
 		System.out.println("Option 3: Display the complete information of all performers.");
 		System.out.println("Option 4: Quit");
 		

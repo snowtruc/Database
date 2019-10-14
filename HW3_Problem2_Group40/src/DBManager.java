@@ -37,9 +37,10 @@ public class DBManager {
 		}			
 	}
 	
-	public ResultSet executeSPQuery(String spname, String[] params, String[] param_types) throws SQLException{
+	public int executeSPQuery(String spname, String[] params, String[] param_types) throws SQLException{
 		//Given a stored procedure name, the values for parameters, and types of parameters,
 		// construct a string that is SQL statement to execute that procedure.
+		//TODO: only does executeUpdate which does not return result set; only works for procedures which do not return results
 		String query = "EXEC " + spname;
 		int num_params = params.length;
 		query = num_params > 0 ? query + " " : query; //append space to query if at least one parameter
@@ -60,7 +61,7 @@ public class DBManager {
 				ps.setInt(i+1, Integer.parseInt(params[i]));
 			}
 		}
-		return ps.executeQuery();
+		return ps.executeUpdate();
 	}
 
 }
