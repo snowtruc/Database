@@ -1,57 +1,81 @@
-import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.DriverManager;
 import java.util.Scanner;
 
 public class HW3_Problem2_Group40 {
-	public static void main(String[] args) throws SQLException {
-		Scanner input = new Scanner(System.in);
-		
-		// Connect to database
+	static Scanner input;
+	static DBManager DB;
 	
-		final String hostName = "henn0020-sql-server.database.windows.net";
-	    final String dbName = "cs-dsa-4513-sql-db";
-	    final String user = "henn0020";
-	    final String password = "~^1@9pxk4*29s|\\a1k22";
-		final String url = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;encrypt=true;host NameInCertificate=*.database.windows.net;loginTimeout=30;",
-				hostName, dbName, user, password);
+	public static void main(String[] args) throws SQLException {
+		String hostName = "henn0020-sql-server.database.windows.net";
+	    String dbName = "cs-dsa-4513-sql-db";
+	    String user = "henn0020";
+	    String password = "~^1@9pxk4*29s|\\a1k22";
+	    input = new Scanner(System.in);
+	    DB = new DBManager(hostName, dbName, user, password);
 
-		// 
 		int option = 0;
 		
 		while(option != 4) {
-			System.out.println("Option 1: ");
-			System.out.println("Option 2: ");
-			System.out.println("Option 3: Display the complete information of all performers.");
-			System.out.println("Option 4: Quit");
+			option = getNextOption();
 			
-			System.out.print("Select an option: ");
-			option = input.nextInt();
-			
-			if(option == 1 || option == 2 || option == 3) {
-				try (final Connection connection = DriverManager.getConnection(url)) {
-					final String schema = connection.getSchema();
-					System.out.println("Successful connection - Schema:" + schema);
-					System.out.println("Query data example:");
-					System.out.println("========================================="); 
-					final String selectSql = "SELECT * FROM performer;";
+			if(option == 1) {
+				//get input from user for pname and age of a new performer
+				String description = "Input the values for a new performer...";
+				String[] param_names = {"pname", "age"};
+				String[] params = getStringInputs(description, param_names); 
+				String[] param_types = {"string", "int"};
+				String spname = "sp_q1";
+				try {
+					final ResultSet resultSet = DB.executeSPQuery(spname, params, param_types);
+
+				} finally {
 					
-					try (final Statement statement = connection.createStatement(); 
-						final ResultSet resultSet = statement.executeQuery(selectSql)) {
-						
-						System.out.println("Contents of the Performer Table:");
-						while (resultSet.next()) {
-							System.out.println(String.format("%s | %s | %s | %s",
-									resultSet.getString(1),
-									resultSet.getString(2),
-									resultSet.getString(3),
-									resultSet.getString(4)));
-						}
+				}
+			}
+			else if(option == 2) {
+			
+			}
+			else if(option == 3) {
+				// Display the complete information of all performers
+				try {
+					final String selectSql = "SELECT * FROM performer;";
+					final ResultSet resultSet = DB.executeStringQuery(selectSql);
+					System.out.println("Contents of the Performer Table:");
+					while (resultSet.next()) {
+						System.out.println(String.format("%s | %s | %s | %s",
+								resultSet.getString(1),
+								resultSet.getString(2),
+								resultSet.getString(3),
+								resultSet.getString(4)));
 					}
+				} finally {
+					
 				}
 			}
 		}
+		// Done getting inputs
+		input.close();
+	}
+	
+	private static int getNextOption() {
+		
+		System.out.println("Option 1: ");
+		System.out.println("Option 2: ");
+		System.out.println("Option 3: Display the complete information of all performers.");
+		System.out.println("Option 4: Quit");
+		
+		System.out.print("Select an option: ");
+		return input.nextInt();
+	}
+	
+	private static String[] getStringInputs(String description, String[] param_names) {
+		System.out.println(description);
+		String[] params = new String[param_names.length];
+		for(int i = 0; i < param_names.length; i++) {
+			System.out.println("Enter the value for " + param_names[i] + ":");
+			params[i] = input.next();
+		}
+		return params;
 	}
 }
